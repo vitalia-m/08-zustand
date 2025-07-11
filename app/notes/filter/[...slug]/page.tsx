@@ -35,7 +35,7 @@ export async function generateMetadata({
 }
 
 export default async function Notes({ params }: NotesProps) {
-  const { slug } = await params;
+  const slug = params.slug;
   const tag = slug[0] === "All" ? undefined : slug[0];
   const response = await fetchNotes("", 1, tag);
 
