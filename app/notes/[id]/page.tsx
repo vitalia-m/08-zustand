@@ -7,6 +7,9 @@ import { fetchNoteById } from "@/lib/api";
 import NoteDetailsClient from "./NoteDetails.client";
 import type { Metadata } from "next";
 
+interface NoteDetailsProps {
+  params: Promise<{ id: string }>;
+}
 export async function generateMetadata({
   params,
 }: {
@@ -35,10 +38,6 @@ export async function generateMetadata({
       ],
     },
   };
-}
-
-interface NoteDetailsProps {
-  params: Promise<{ id: string }>;
 }
 
 export default async function NoteDetails({ params }: NoteDetailsProps) {
