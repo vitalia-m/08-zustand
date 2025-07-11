@@ -38,11 +38,11 @@ export async function generateMetadata({
 }
 
 interface NoteDetailsProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 export default async function NoteDetails({ params }: NoteDetailsProps) {
-  const { id } = await params;
+  const { id } = params;
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
