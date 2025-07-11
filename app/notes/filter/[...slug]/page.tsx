@@ -8,10 +8,8 @@ interface NotesProps {
 
 export async function generateMetadata({
   params,
-}: {
-  params: { slug: string[] };
-}): Promise<Metadata> {
-  const slug = params.slug;
+}: NotesProps): Promise<Metadata> {
+  const { slug } = await params;
   const filter = slug[0] ?? "All";
 
   const title = `NoteHub - Filter: ${filter}`;
