@@ -1,5 +1,5 @@
 import { fetchNotes } from "@/lib/api";
-import NotesClient from "./NotesClient";
+import NotesClient from "./Notes.client";
 import type { Metadata } from "next";
 
 interface NotesProps {
