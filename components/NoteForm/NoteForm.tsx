@@ -18,7 +18,11 @@ const NoteFormSchema = Yup.object().shape({
   tag: Yup.string().oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"]),
 });
 
-export default function NoteForm() {
+interface NoteFormProps {
+  onClose?: () => void;
+}
+
+export default function NoteForm({ onClose }: NoteFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
@@ -34,11 +38,7 @@ export default function NoteForm() {
       !draft?.title &&
       !draft?.content
     ) {
-      setDraft({
-        title: "",
-        content: "",
-        tag: "Todo",
-      });
+      setDraft({ title: "", content: "", tag: "Todo" });
     }
   }, [pathname, draft, setDraft]);
 
@@ -47,9 +47,17 @@ export default function NoteForm() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["Notes"] });
       clearDraft();
-      router.back();
+      handleClose();
     },
   });
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      router.back();
+    }
+  };
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -63,11 +71,13 @@ export default function NoteForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrors({});
+
     const values: NoteFormData = {
       title: draft.title,
       content: draft.content,
       tag: draft.tag,
     };
+
     try {
       await NoteFormSchema.validate(values, { abortEarly: false });
       setIsSubmitting(true);
@@ -134,12 +144,16 @@ export default function NoteForm() {
       <div className={css.actions}>
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={handleClose}
           className={css.cancelButton}
         >
           Cancel
         </button>
-        <button type="submit" className={css.submitButton}>
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={isSubmitting || addNewNote.isPending}
+        >
           {isSubmitting || addNewNote.isPending
             ? "Creating note..."
             : "Create note"}
