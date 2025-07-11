@@ -37,9 +37,11 @@ export async function generateMetadata({
   };
 }
 
-interface NoteDetailsProps {
-  params: { id: string };
-}
+type NoteDetailsProps = {
+  params: {
+    id: string;
+  };
+};
 
 export default async function NoteDetails({ params }: NoteDetailsProps) {
   const { id } = params;
