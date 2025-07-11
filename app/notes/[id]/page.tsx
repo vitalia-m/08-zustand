@@ -20,7 +20,7 @@ export async function generateMetadata({
 
   return {
     title: `NoteHub - ${noteTitle}`,
-    description: "${note.content}",
+    description: `${noteDescription}`,
     openGraph: {
       type: "article",
       url: `https://08-zustand-ten-jet.vercel.app/notes/${params.id}`,
