@@ -30,13 +30,13 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   const { draft, setDraft, clearDraft } = useNoteDraftStore();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (
       pathname === "/notes/action/create" &&
       !draft?.title &&
-      !draft?.content
+      !draft?.content &&
+      !draft.tag
     ) {
       setDraft({ title: "", content: "", tag: "Todo" });
     }
@@ -80,7 +80,6 @@ export default function NoteForm({ onClose }: NoteFormProps) {
 
     try {
       await NoteFormSchema.validate(values, { abortEarly: false });
-      setIsSubmitting(true);
       addNewNote.mutate(values);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -152,11 +151,9 @@ export default function NoteForm({ onClose }: NoteFormProps) {
         <button
           type="submit"
           className={css.submitButton}
-          disabled={isSubmitting || addNewNote.isPending}
+          disabled={addNewNote.isPending}
         >
-          {isSubmitting || addNewNote.isPending
-            ? "Creating note..."
-            : "Create note"}
+          {addNewNote.isPending ? "Creating note..." : "Create note"}
         </button>
       </div>
     </form>
