@@ -7,6 +7,9 @@ import { fetchNoteById } from "@/lib/api";
 import NoteDetailsClient from "./NoteDetails.client";
 import type { Metadata } from "next";
 
+type Props = {
+  params: Promise<{ id: string }>;
+};
 export async function generateMetadata({
   params,
 }: {
@@ -37,11 +40,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function NoteDetails({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+const NoteDetails = async ({ params }: Props) => {
   const { id } = await params;
   const queryClient = new QueryClient();
 
@@ -57,4 +56,5 @@ export default async function NoteDetails({
       <NoteDetailsClient />
     </HydrationBoundary>
   );
-}
+};
+export default NoteDetails;
